@@ -52,7 +52,7 @@ namespace MonteOlimpo.BR.NameVerify
         {
             var round = 0;
 
-            if (frequency > 10000)
+            if (frequency > 100000)
             {
                 round = 50;
             }
