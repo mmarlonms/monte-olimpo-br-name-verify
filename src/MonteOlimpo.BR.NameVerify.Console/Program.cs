@@ -6,10 +6,16 @@ namespace MonteOlimpo.BR.NameVerify.Console
     {
         static void Main(string[] args)
         {
-            System.Console.WriteLine("Digite o nome");
-            string nome = System.Console.ReadLine();
-            System.Console.WriteLine("O nome " + nome + " possui " + NameVerify.Verify(nome) + "% de confiabilidade");
-            System.Console.ReadKey();
+
+            do
+            {
+                System.Console.WriteLine("Digite o nome");
+                string nome = System.Console.ReadLine();
+                System.Console.WriteLine("O nome " + nome + " possui " + NameVerify.Verify(nome) + "% de confiabilidade");
+             
+            } while (true);
+
+      
         }
     }
 }

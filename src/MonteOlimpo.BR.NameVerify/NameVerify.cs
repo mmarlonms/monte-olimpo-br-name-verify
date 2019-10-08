@@ -12,37 +12,64 @@ namespace MonteOlimpo.BR.NameVerify
         public static decimal Verify(string name)
         {
             var names = SplitName(name);
-
+            bool firstName = true;
             decimal round = 0;
+            decimal percent = 0;
 
             foreach (var n in names)
             {
                 var result = ibgeAdapter.Find(n);
 
-                if (result.Count > 0)
+                if (firstName)
                 {
-                    var frequency = result.SelectMany(y => y.Res).Sum(x => x.Frequencia);
+                    if (result.Count > 0)
+                    {
+                        var frequency = result.SelectMany(y => y.Res).Sum(x => x.Frequencia);
+                        percent += FisrtNameRound(frequency);
+                    }
 
-                    if (frequency > 10000)
+                    firstName = false;
+                }
+                else //Sobrenome
+                {
+                    if (result.Count > 0)
                     {
                         round += 100;
                     }
-                    else if (frequency > 50000)
+                    else
                     {
                         round += 90;
                     }
-                    else if (frequency > 25000)
-                    {
-                        round += 80;
-                    }
-                    else
-                    {
-                        round += 70;
-                    }
                 }
             }
-                                 
-            return round/names.Length;
+
+            var secondNameRound = (round * 50) / ((names.Length-1) * 100);
+
+            return percent + secondNameRound;
+        }
+
+        private static decimal FisrtNameRound(int frequency)
+        {
+            var round = 0;
+
+            if (frequency > 10000)
+            {
+                round = 50;
+            }
+            else if (frequency > 50000)
+            {
+                round = 45;
+            }
+            else if (frequency > 25000)
+            {
+                round = 40;
+            }
+            else
+            {
+                round = 35;
+            }
+
+            return round;
         }
 
         private static string[] SplitName(string name)
